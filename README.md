@@ -2,4 +2,4 @@
 
 # Sabiyya Collections | E-commerce Nextjs app
 
-Simple ecommerce Nextjs app with firebase [typescript].
+Simple ecommerce Nextjs app with firebase [Typescript].

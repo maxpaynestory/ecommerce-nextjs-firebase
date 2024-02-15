@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { Container, Row, Col, Button, Breadcrumb } from "react-bootstrap";
 import ProductDetailCarousal from "./carousal";
+import { displayMoneyInPKR } from "../../helpers/utils";
+import ColorChooser from "../../components/common/ColorChooser";
 
 type ProductParams = {
   id: string;
@@ -36,25 +38,31 @@ export default async function ProductDetail({
   if (!product) {
     redirect("/404");
   }
+  const productSizes =
+    product?.sizes
+      .sort((a, b) => (a < b ? -1 : 1))
+      .map((size) => ({ label: `${size} meter`, value: size })) || [];
   return (
     <>
       <Navigation />
       <main>
         <Container className="my-5">
           <Row>
-            <Col md={12}>
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link href="/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link href="/shop">Shop</Link>
-                </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  {product.name}
-                </li>
-              </ol>
-            </Col>
+            <nav aria-label="breadcrumb">
+              <Col md={12}>
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link href="/">Home</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link href="/shop">Shop</Link>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    {product.name}
+                  </li>
+                </ol>
+              </Col>
+            </nav>
           </Row>
           <Row>
             <Col md={6}>
@@ -64,9 +72,18 @@ export default async function ProductDetail({
               <h2>{product.brand}</h2>
               <h1>{product.name}</h1>
               <p>{product.description}</p>
-              <p>Available Colors: {product.availableColors.join(", ")}</p>
-              <h3>PKR {product.price}</h3>
-              <Button variant="primary">Buy Now</Button>
+              <p>Total size: {productSizes[0].label}</p>
+              <div>
+                Color:{" "}
+                <ColorChooser availableColors={product.availableColors} />
+              </div>
+              <h3>{displayMoneyInPKR(product.price)}</h3>
+              <Button
+                variant="primary"
+                disabled={product.maxQuantity < 1 ? true : false}
+              >
+                Buy Now
+              </Button>
             </Col>
           </Row>
         </Container>

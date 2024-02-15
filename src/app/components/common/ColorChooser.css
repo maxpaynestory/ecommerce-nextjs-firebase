@@ -1,0 +1,29 @@
+.color-item:hover {
+  border: 2px solid #f1f1f1;
+}
+
+.color-item-selected,
+.color-item-deletable {
+  border: 2px solid #f1f1f1;
+  transform: scale(1.2);
+}
+.color-item {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0 10px;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.color-item-selected:after,
+.color-item-deletable:after {
+  content: "\2713";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  color: #fff;
+}
