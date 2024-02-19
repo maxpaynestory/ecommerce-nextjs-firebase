@@ -6,35 +6,31 @@ import {
   GithubAuthProvider,
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore, getDoc, doc } from "firebase/firestore";
 import firebaseConfig from "./config";
 
 class FirebaseClient {
   auth: any;
   storage: any;
   db: any;
-  analytics: any;
   app: any;
   constructor() {
-    const app =
-      getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    const currentApps = getApps();
+    if (currentApps.length > 0) {
+      this.app = currentApps[0];
+    } else {
+      this.app = initializeApp(firebaseConfig);
+    }
 
-    this.storage = getStorage(app);
-    this.db = getFirestore(app);
-    this.auth = getAuth(app);
-    this.analytics = getAnalytics(app);
-    const uniqueUserId = performance.now().toString();
-    this.analytics.setUserId(uniqueUserId);
-    this.app = app;
+    this.storage = getStorage(this.app);
+    this.db = getFirestore(this.app);
+    this.auth = getAuth(this.app);
   }
 
   // AUTH ACTIONS ------------
 
   createAccount = (email: string, password: string) =>
     this.auth.createUserWithEmailAndPassword(email, password);
-
-  logEvent = (name: string, data: any) => this.analytics.logEvent(name, data);
 
   signIn = (email: string, password: string) =>
     this.auth.signInWithEmailAndPassword(email, password);
@@ -123,8 +119,7 @@ class FirebaseClient {
 
   // // PRODUCT ACTIONS --------------
 
-  getSingleProduct = (id: string) =>
-    this.db.collection("products").doc(id).get();
+  getSingleProduct = (id: string) => getDoc(doc(this.db, "products", id));
 
   getProducts = (lastRefKey: string) => {
     let didTimeout = false;

@@ -7,6 +7,7 @@ import { Container, Row, Col, Button, Breadcrumb } from "react-bootstrap";
 import ProductDetailCarousal from "./carousal";
 import { displayMoneyInPKR } from "../../helpers/utils";
 import ColorChooser from "../../components/common/ColorChooser";
+import { BuyNowButton } from "./BuyNowButton";
 
 type ProductParams = {
   id: string;
@@ -78,12 +79,7 @@ export default async function ProductDetail({
                 <ColorChooser availableColors={product.availableColors} />
               </div>
               <h3>{displayMoneyInPKR(product.price)}</h3>
-              <Button
-                variant="primary"
-                disabled={product.maxQuantity < 1 ? true : false}
-              >
-                Buy Now
-              </Button>
+              <BuyNowButton product={product} />
             </Col>
           </Row>
         </Container>
