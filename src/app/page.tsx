@@ -4,6 +4,9 @@ import { Metadata } from "next";
 import Navigation from "./components/common/Navigation";
 import firebaseServerInstance from "../firebase/firebaseServer";
 import { Product } from "./entities/product";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Sabiyya Collections | Home",

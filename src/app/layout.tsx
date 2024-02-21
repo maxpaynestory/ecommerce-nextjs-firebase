@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import BootstrapJs from "./components/common/BootstrapJs";
 
 export const metadata: Metadata = {
