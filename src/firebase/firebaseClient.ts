@@ -4,10 +4,24 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   GithubAuthProvider,
+  signInWithPhoneNumber,
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getFirestore, getDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+  collection,
+  addDoc,
+  setDoc,
+  increment,
+  writeBatch,
+} from "firebase/firestore";
 import firebaseConfig from "./config";
+import { Order } from "../app/entities/order";
 
 class FirebaseClient {
   auth: any;
@@ -43,7 +57,7 @@ class FirebaseClient {
   signInWithGithub = () => this.auth.signInWithPopup(new GithubAuthProvider());
 
   signInWithPhoneNumber = (phone: string, appVerifier: any) =>
-    this.auth.signInWithPhoneNumber(phone, appVerifier);
+    signInWithPhoneNumber(this.auth, phone, appVerifier);
 
   signOut = () => this.auth.signOut();
 
@@ -281,40 +295,31 @@ class FirebaseClient {
   removeProduct = (id: string) =>
     this.db.collection("products").doc(id).delete();
 
-  buynowProduct = (
-    product: any,
-    guestUserInfo: any,
-    orderNumber: string,
-    total: Number,
-    shippingCost: Number
-  ) => {
-    return new Promise(async (resolve, reject) => {
-      const orderId = this.db.collection("orders").doc().id;
-      const results = await this.db.collection("orders").doc(orderId).set({
-        product: product,
-        guestUserInfo: guestUserInfo,
-        orderNumber: orderNumber,
-        createdAt: new Date(),
-        total: total,
-        shippingCost: shippingCost,
-      });
-      const rs = await this.db
-        .collection("products")
-        .doc(product.id)
-        .update({
-          maxQuantity: this.db.FieldValue.increment(-1),
-        });
-      console.log("Ye kia hai", rs);
-      resolve(results);
+  buynowProduct = (order: Order) => {
+    return new Promise<Order>(async (resolve, reject) => {
+      const { id, ...nativeObject } = order;
+      nativeObject.guestUserInfo = { ...order.guestUserInfo };
+      console.log(nativeObject);
+      const docRef = await addDoc(collection(this.db, "orders"), nativeObject);
+      const orderId = docRef.id;
+      order.id = orderId;
+      if (order.product.id) {
+        const batch = writeBatch(this.db);
+        const nycRef = doc(this.db, "products", order.product.id);
+        batch.update(nycRef, { maxQuantity: increment(-1) });
+        await batch.commit();
+      }
+      resolve(order);
     });
   };
 
   getOrder = (orderNumber: string) =>
-    this.db
-      .collection("orders")
-      .where("orderNumber", "==", orderNumber)
-      .limit(1)
-      .get();
+    getDocs(
+      query(
+        collection(this.db, "orders"),
+        where("orderNumber", "==", orderNumber)
+      )
+    );
 }
 
 const firebaseClientInstance = new FirebaseClient();

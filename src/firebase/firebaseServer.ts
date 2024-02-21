@@ -3,6 +3,7 @@ import { App, getApps, initializeApp } from "firebase-admin/app";
 import { Auth, getAuth } from "firebase-admin/auth";
 import { FieldPath, Firestore, getFirestore } from "firebase-admin/firestore";
 import { Product } from "../app/entities/product";
+import { Order } from "../app/entities/order";
 
 export type ProductSearchResult = {
   products: Product[];
@@ -53,6 +54,21 @@ class FirebaseServer {
         .get();
       if (snapshot.exists) {
         resolve(Product.createFromDoc(snapshot.id, snapshot.data()));
+      } else {
+        resolve(null);
+      }
+    });
+  };
+
+  getOrder = (orderNumber: string): Promise<Order | null> => {
+    return new Promise(async (resolve, _) => {
+      const snapshot = await this.firestore
+        .collection("orders")
+        .where("orderNumber", "==", orderNumber)
+        .get();
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        resolve(Order.createFromDoc(doc.id, doc.data()));
       } else {
         resolve(null);
       }

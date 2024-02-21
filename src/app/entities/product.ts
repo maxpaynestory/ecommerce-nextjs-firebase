@@ -21,9 +21,11 @@ export class Product {
   static createFromDoc(id: string, doc: any): Product {
     const product = doc as Product;
     product.id = id;
-    /*product.created = new Date(doc.created._seconds * 1000);
-    product.updated = new Date(doc.updated._seconds * 1000);*/
-    product.dateAdded = new Date(doc.dateAdded._seconds * 1000);
+    if (doc.dateAdded._seconds) {
+      product.dateAdded = new Date(doc.dateAdded._seconds * 1000);
+    } else {
+      product.dateAdded = new Date(doc.dateAdded);
+    }
     product.imageCollection = doc.imageCollection as ProductImage[];
     return product;
   }
