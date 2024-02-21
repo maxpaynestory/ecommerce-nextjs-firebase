@@ -7,14 +7,14 @@ export default function NavigationNew() {
       className="navbar navbar-expand-lg bg-body-tertiary rounded"
       aria-label="Eleventh navbar example"
     >
-      <div className="d-flex flex-row">
+      <div className="d-flex flex-row ps-5">
         <Link className="navbar-brand" href="/">
           <Image
             alt="Sabiyya Collection"
             src="/images/logo-full.png"
-            height={42}
+            height={65}
             width={100}
-            style={{ objectFit: "contain", objectPosition: "center center" }}
+            style={{ objectFit: "contain", objectPosition: "center censer" }}
           />
         </Link>
         <div className="collapse navbar-collapse" id="navbarsExample09">
