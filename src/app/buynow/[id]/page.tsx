@@ -7,7 +7,7 @@ import firebaseClientInstance from "../../../firebase/firebaseClient";
 import { DocumentSnapshot, or } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import "./buynowstyle.css";
-import { displayMoneyInPKR } from "../../helpers/utils";
+import { displayMoneyInPKR } from "../../../helpers/utils";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

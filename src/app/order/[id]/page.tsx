@@ -2,7 +2,7 @@ import NavigationNew from "../../components/common/Navigation";
 import firebaseServerInstance from "../../../firebase/firebaseServer";
 import { redirect } from "next/navigation";
 import styles from "./orderPage.module.css";
-import { displayMoneyInPKR } from "../../helpers/utils";
+import { displayMoneyInPKR } from "../../../helpers/utils";
 
 type OrderPageParams = {
   id: string;

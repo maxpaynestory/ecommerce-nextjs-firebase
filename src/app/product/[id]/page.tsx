@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { Container, Row, Col, Button, Breadcrumb } from "react-bootstrap";
 import ProductDetailCarousal from "./carousal";
-import { displayMoneyInPKR } from "../../helpers/utils";
+import { displayMoneyInPKR } from "../../../helpers/utils";
 import ColorChooser from "../../components/common/ColorChooser";
 import { BuyNowButton } from "./BuyNowButton";
 
