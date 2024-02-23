@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
-import { ToastContainer } from "react-toastify";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import AppBar from "./ui/navBar";
+import StoreProvider from "../storeProvider";
+import CheckAuth from "./ui/checkAuth";
 import "./ui/globals.css";
 
 export const metadata: Metadata = {
@@ -17,10 +21,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={theme}>
-          {children}
-          <ToastContainer />
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider theme={theme}>
+            <Box sx={{ display: "flex" }}>
+              <CheckAuth />
+              <CssBaseline />
+              <AppBar />
+              {children}
+            </Box>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );

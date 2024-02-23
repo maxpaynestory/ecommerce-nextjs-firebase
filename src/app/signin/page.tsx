@@ -1,16 +1,17 @@
 import { Metadata } from "next";
 import Navigation from "../components/common/Navigation";
+import SigninForm from "./signinForm";
 
 export const metadata: Metadata = {
-  title: "Sabiyya Collections | Featured Products",
+  title: "Sabiyya Collections | Login",
 };
 
-export default function LoginPage() {
+export default function SigninPage() {
   return (
     <>
       <Navigation />
-      <main>
-        <h1>Login Page</h1>
+      <main className="form-signin w-100 m-auto">
+        <SigninForm />
       </main>
     </>
   );

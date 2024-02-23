@@ -5,6 +5,7 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   signInWithPhoneNumber,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import {
@@ -47,7 +48,7 @@ class FirebaseClient {
     this.auth.createUserWithEmailAndPassword(email, password);
 
   signIn = (email: string, password: string) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+    signInWithEmailAndPassword(this.auth, email, password);
 
   signInWithGoogle = () => this.auth.signInWithPopup(new GoogleAuthProvider());
 
@@ -66,7 +67,7 @@ class FirebaseClient {
   addUser = (id: string, user: any) =>
     this.db.collection("users").doc(id).set(user);
 
-  getUser = (id: string) => this.db.collection("users").doc(id).get();
+  getUser = (id: string) => getDoc(doc(this.db, "users", id));
 
   passwordUpdate = (password: string) =>
     this.auth.currentUser.updatePassword(password);
@@ -114,7 +115,7 @@ class FirebaseClient {
   updateProfile = (id: string, updates: any) =>
     this.db.collection("users").doc(id).update(updates);
 
-  onAuthStateChanged = () =>
+  /*onAuthStateChanged = () =>
     new Promise((resolve, reject) => {
       this.auth.onAuthStateChanged((user: any) => {
         if (user) {
@@ -123,7 +124,7 @@ class FirebaseClient {
           reject(new Error("Auth State Changed failed"));
         }
       });
-    });
+    });*/
 
   saveBasketItems = (items: any, userId: string) =>
     this.db.collection("users").doc(userId).update({ basket: items });
