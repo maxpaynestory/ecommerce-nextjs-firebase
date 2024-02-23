@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 import firebaseClientInstance from "../../../firebase/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { DocumentSnapshot } from "firebase/firestore";
+import { useAppDispatch } from "../../../lib/hooks";
+import { User } from "../../entities/user";
+import { setUser } from "../../../lib/slices/authSlice";
 
 export default function CheckAuth() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
       firebaseClientInstance.auth,
       async (user) => {
         if (user) {
-          console.log("User uid", user.uid);
           firebaseClientInstance
             .getUser(user.uid)
             .then((snapshot: DocumentSnapshot) => {
@@ -21,6 +24,8 @@ export default function CheckAuth() {
                 signOut(firebaseClientInstance.auth);
               } else {
                 const data = snapshot.data();
+                const user = User.createFromDoc(snapshot.id, data);
+                dispatch(setUser(user.toObject()));
                 if (data.role !== "ADMIN") {
                   signOut(firebaseClientInstance.auth);
                 }

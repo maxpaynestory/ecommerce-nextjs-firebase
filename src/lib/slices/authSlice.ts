@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User, UserCredential } from "firebase/auth";
 import { showError } from "../../helpers/utils";
 import firebaseInstance from "../../firebase/firebaseClient";
+import { User } from "../../app/entities/user";
 
 export interface LoginUserRequest {
   email: string;
@@ -11,17 +11,11 @@ export interface LoginUserRequest {
 // authentication for all super admins
 export const loginUser = createAsyncThunk<any, LoginUserRequest>(
   "auth/user",
-  async (
-    values: LoginUserRequest,
-    { rejectWithValue }
-  ): Promise<UserCredential | any> => {
+  async (values: LoginUserRequest, { rejectWithValue }): Promise<any> => {
     try {
       /////// place firebase login code here /////
-      const response: UserCredential = await firebaseInstance.signIn(
-        values.email,
-        values.password
-      );
-      return { good: true };
+      await firebaseInstance.signIn(values.email, values.password);
+      return null;
     } catch (error: any) {
       return rejectWithValue("Signin Failed");
     }
@@ -57,7 +51,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state: SliceState, action) => {
         state.loginStatus.pending = false;
-        //state.user = action.payload.user;
+        state.user = action.payload.user;
       })
       .addCase(loginUser.rejected, (state: SliceState, action) => {
         state.loginStatus.pending = false;
@@ -74,9 +68,12 @@ export const authSlice = createSlice({
       firebaseInstance.signOut();
       return initialState;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
-export const { logout } = authSlice.actions;
+export const { logout, setUser } = authSlice.actions;
 export default authSlice.reducer;
 export const selectUser = (state: any) => state.auth.user;
 export const selectLoginUserPending = (state: any) =>
