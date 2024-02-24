@@ -345,15 +345,13 @@ const BuyNowPage = ({ params }: { params: BuyNowPageParams }) => {
             <Modal.Title>Verify your Mobile number.</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <Form.Label>Enter OTP from SMS</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder=""
-                onChange={(e) => setOtp(e.target.value)}
-                autoFocus
-              />
-            </Form>
+            <Form.Label>Enter OTP from SMS</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder=""
+              onChange={(e) => setOtp(e.target.value)}
+              autoFocus
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={VerifyOTP}>

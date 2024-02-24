@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "react-bootstrap";
-import { Product } from "../../entities/product";
 import { useRouter } from "next/navigation";
 type BuyNowButtonProps = {
-  product: Product;
+  product: any;
 };
 export async function BuyNowButton(props: BuyNowButtonProps) {
   const { product } = props;

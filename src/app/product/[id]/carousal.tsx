@@ -1,14 +1,12 @@
 "use client";
-import { useEffect } from "react";
 import Image from "next/image";
-import { Product } from "../../entities/product";
 
 type CarousalProps = {
-  product: Product;
+  product: any;
 };
 
 export default function ProductDetailCarousal(props: CarousalProps) {
-  const product = props.product;
+  const { product } = props;
   return (
     <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">
       <div className="carousel-inner">

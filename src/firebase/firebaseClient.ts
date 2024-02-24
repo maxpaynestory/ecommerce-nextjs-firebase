@@ -298,10 +298,10 @@ class FirebaseClient {
 
   buynowProduct = (order: Order) => {
     return new Promise<Order>(async (resolve, reject) => {
-      const { id, ...nativeObject } = order;
-      nativeObject.guestUserInfo = { ...order.guestUserInfo };
-      console.log(nativeObject);
-      const docRef = await addDoc(collection(this.db, "orders"), nativeObject);
+      const docRef = await addDoc(
+        collection(this.db, "orders"),
+        order.toObject()
+      );
       const orderId = docRef.id;
       order.id = orderId;
       if (order.product.id) {

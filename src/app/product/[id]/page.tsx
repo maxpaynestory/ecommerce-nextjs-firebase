@@ -67,7 +67,7 @@ export default async function ProductDetail({
           </Row>
           <Row>
             <Col md={6}>
-              <ProductDetailCarousal product={product} />
+              <ProductDetailCarousal product={product.toObject()} />
             </Col>
             <Col md={6}>
               <h2>{product.brand}</h2>
@@ -79,7 +79,7 @@ export default async function ProductDetail({
                 <ColorChooser availableColors={product.availableColors} />
               </div>
               <h3>{displayMoneyInPKR(product.price)}</h3>
-              <BuyNowButton product={product} />
+              <BuyNowButton product={product.toObject()} />
             </Col>
           </Row>
         </Container>
