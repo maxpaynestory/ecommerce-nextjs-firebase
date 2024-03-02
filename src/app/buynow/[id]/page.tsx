@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import NavigationNew from "../../components/common/Navigation";
+import NavigationNew from "../../components/common/navigation";
 import { Product } from "../../entities/product";
 import firebaseClientInstance from "../../../firebase/firebaseClient";
 import { DocumentSnapshot, or } from "firebase/firestore";

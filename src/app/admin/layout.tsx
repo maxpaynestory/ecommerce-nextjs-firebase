@@ -23,7 +23,7 @@ export default function RootLayout({
       <body>
         <StoreProvider>
           <ThemeProvider theme={theme}>
-            <Box sx={{ display: "flex" }}>
+            <Box>
               <CheckAuth />
               <CssBaseline />
               <AppBar />

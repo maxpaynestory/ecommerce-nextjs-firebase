@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import ColorChooser from "../../components/common/ColorChooser";
+import ColorChooser from "../../components/common/colorChooser";
 
 type AvailableColorsProps = {
   availableColors: string[];

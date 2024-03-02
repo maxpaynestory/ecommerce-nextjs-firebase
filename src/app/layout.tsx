@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import BootstrapJs from "./components/common/BootstrapJs";
+import BootstrapJs from "./components/common/bootstrapJs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import StoreProvider from "./storeProvider";

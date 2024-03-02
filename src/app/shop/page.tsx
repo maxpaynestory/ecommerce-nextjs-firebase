@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Navigation from "../components/common/Navigation";
+import Navigation from "../components/common/navigation";
 import firebaseServerInstance, {
   ProductSearchResult,
 } from "../../firebase/firebaseServer";

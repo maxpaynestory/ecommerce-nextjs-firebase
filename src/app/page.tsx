@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
-import Navigation from "./components/common/Navigation";
 import firebaseServerInstance from "../firebase/firebaseServer";
 import { Product } from "./entities/product";
-import ScImage from "./components/common/ScImage";
-
+import ScImage from "./components/common/scImage";
+import NavigationNew from "./components/common/navigation";
 export const metadata: Metadata = {
   title: "Sabiyya Collections | Home",
 };
@@ -56,7 +55,7 @@ export default async function Home() {
   });
   return (
     <>
-      <Navigation />
+      <NavigationNew />
       <div className="f-flex flex-row">
         <div className="d-flex position-relative justify-content-center">
           <ScImage

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Navigation from "../components/common/Navigation";
+import Navigation from "../components/common/navigation";
 import SigninForm from "./signinForm";
 
 export const metadata: Metadata = {

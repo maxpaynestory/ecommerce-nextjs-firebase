@@ -51,7 +51,6 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state: SliceState, action) => {
         state.loginStatus.pending = false;
-        state.user = action.payload.user;
       })
       .addCase(loginUser.rejected, (state: SliceState, action) => {
         state.loginStatus.pending = false;

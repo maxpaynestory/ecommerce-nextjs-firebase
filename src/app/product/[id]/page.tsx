@@ -1,4 +1,4 @@
-import Navigation from "../../components/common/Navigation";
+import Navigation from "../../components/common/navigation";
 import Link from "next/link";
 import firebaseServerInstance from "../../../firebase/firebaseServer";
 import { redirect } from "next/navigation";
@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { Container, Row, Col, Button, Breadcrumb } from "react-bootstrap";
 import ProductDetailCarousal from "./carousal";
 import { displayMoneyInPKR } from "../../../helpers/utils";
-import ColorChooser from "../../components/common/ColorChooser";
+import ColorChooser from "../../components/common/colorChooser";
 import { BuyNowButton } from "./BuyNowButton";
 
 type ProductParams = {
