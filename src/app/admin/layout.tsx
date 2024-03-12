@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "./ui/navBar";
 import StoreProvider from "../storeProvider";
-import CheckAuth from "./ui/checkAuth";
+import IsClientAdmin from "./ui/isClientAdmin";
 import "./ui/globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
         <StoreProvider>
           <ThemeProvider theme={theme}>
             <Box>
-              <CheckAuth />
+              <IsClientAdmin />
               <CssBaseline />
               <AppBar />
               {children}

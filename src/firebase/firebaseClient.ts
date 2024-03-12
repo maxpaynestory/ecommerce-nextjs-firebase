@@ -20,6 +20,7 @@ import {
   setDoc,
   increment,
   writeBatch,
+  documentId,
 } from "firebase/firestore";
 import firebaseConfig from "./config";
 import { Order } from "../app/entities/order";
@@ -68,6 +69,15 @@ class FirebaseClient {
     this.db.collection("users").doc(id).set(user);
 
   getUser = (id: string) => getDoc(doc(this.db, "users", id));
+
+  getUserbyRole = (uid: string, role: string) =>
+    getDocs(
+      query(
+        collection(this.db, "users"),
+        where(documentId(), "==", uid),
+        where("role", "==", role)
+      )
+    );
 
   passwordUpdate = (password: string) =>
     this.auth.currentUser.updatePassword(password);
@@ -135,6 +145,8 @@ class FirebaseClient {
   // // PRODUCT ACTIONS --------------
 
   getSingleProduct = (id: string) => getDoc(doc(this.db, "products", id));
+
+  getProductsAdmin = () => getDocs(query(collection(this.db, "products")));
 
   getProducts = (lastRefKey: string) => {
     let didTimeout = false;

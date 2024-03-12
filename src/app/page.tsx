@@ -1,10 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import firebaseServerInstance from "../firebase/firebaseServer";
 import { Product } from "./entities/product";
 import ScImage from "./components/common/scImage";
 import NavigationNew from "./components/common/navigation";
+import bannerGirl from "../../public/images/banner-girl.png";
+
 export const metadata: Metadata = {
   title: "Sabiyya Collections | Home",
 };
@@ -18,8 +19,8 @@ export default async function Home() {
         <ScImage
           src={product.image}
           alt={`${product.name} image`}
-          width={200}
-          height={200}
+          width={250}
+          height={250}
         />
         <div className="card-body">
           <h5 className="card-title">{product.name}</h5>
@@ -40,8 +41,8 @@ export default async function Home() {
         <ScImage
           src={product.image}
           alt={`${product.name} image`}
-          width={200}
-          height={200}
+          width={250}
+          height={250}
         />
         <div className="card-body">
           <h5 className="card-title">{product.name}</h5>
@@ -59,10 +60,10 @@ export default async function Home() {
       <div className="f-flex flex-row">
         <div className="d-flex position-relative justify-content-center">
           <ScImage
-            src="/images/banner-girl.png"
+            src={bannerGirl}
             alt="Main Banner"
-            height={400}
-            width={1200}
+            height={300}
+            width={400}
           />
         </div>
         <div className="d-flex flex-row justify-content-around">

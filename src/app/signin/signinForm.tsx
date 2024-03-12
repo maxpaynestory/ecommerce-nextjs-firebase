@@ -1,15 +1,26 @@
 "use client";
 
+import firebaseClientInstance from "../../firebase/firebaseClient";
 import { useAppDispatch } from "../../lib/hooks";
 import { loginUser } from "../../lib/slices/authSlice";
+import { UserRole } from "../entities/user";
+import { useRouter } from "next/navigation";
 
 export default function SigninForm() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const elements: any = e.currentTarget.elements;
     const email = elements.floatingInput.value;
     const password = elements.floatingPassword.value;
-    dispatch(loginUser({ email: email, password: password }));
+    dispatch(loginUser({ email: email, password: password }))
+      .then((action) => action.payload)
+      .then((uid) => firebaseClientInstance.getUserbyRole(uid, UserRole.Admin))
+      .then((users) => {
+        if (!users.empty) {
+          router.push("/admin");
+        }
+      });
     e.preventDefault();
   };
   return (

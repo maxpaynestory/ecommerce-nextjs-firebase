@@ -14,8 +14,11 @@ export const loginUser = createAsyncThunk<any, LoginUserRequest>(
   async (values: LoginUserRequest, { rejectWithValue }): Promise<any> => {
     try {
       /////// place firebase login code here /////
-      await firebaseInstance.signIn(values.email, values.password);
-      return null;
+      const usercred = await firebaseInstance.signIn(
+        values.email,
+        values.password
+      );
+      return usercred.user.uid;
     } catch (error: any) {
       return rejectWithValue("Signin Failed");
     }
@@ -31,6 +34,7 @@ interface LoginStatus {
 interface SliceState {
   loginStatus: LoginStatus;
   user: User | null;
+  uid: string | null;
 }
 
 const initialState: SliceState = {
@@ -40,6 +44,7 @@ const initialState: SliceState = {
     pending: false,
   },
   user: null,
+  uid: null,
 };
 
 export const authSlice = createSlice({
@@ -50,6 +55,7 @@ export const authSlice = createSlice({
         state.loginStatus.error = false;
       })
       .addCase(loginUser.fulfilled, (state: SliceState, action) => {
+        state.uid = action.payload;
         state.loginStatus.pending = false;
       })
       .addCase(loginUser.rejected, (state: SliceState, action) => {

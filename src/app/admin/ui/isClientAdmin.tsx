@@ -6,10 +6,10 @@ import firebaseClientInstance from "../../../firebase/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { DocumentSnapshot } from "firebase/firestore";
 import { useAppDispatch } from "../../../lib/hooks";
-import { User } from "../../entities/user";
+import { User, UserRole } from "../../entities/user";
 import { setUser } from "../../../lib/slices/authSlice";
 
-export default function CheckAuth() {
+export default function IsClientAdmin() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function CheckAuth() {
                 const data = snapshot.data();
                 const user = User.createFromDoc(snapshot.id, data);
                 dispatch(setUser(user.toObject()));
-                if (data.role !== "ADMIN") {
+                if (data.role !== UserRole.Admin) {
                   signOut(firebaseClientInstance.auth);
                 }
               }
