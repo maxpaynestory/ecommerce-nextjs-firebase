@@ -10,8 +10,10 @@ import {
 type ScTextFieldProps = {
   label: string;
   type: string;
-  defaultValue: string;
+  defaultValue: any;
   name: string;
+  placeholder?: string;
+  error?: boolean;
 };
 
 export default function ScTextField({
@@ -19,14 +21,22 @@ export default function ScTextField({
   type,
   defaultValue,
   name,
+  placeholder,
 }: ScTextFieldProps) {
   return (
-    <TextField
-      label={label}
-      type={type}
-      variant="outlined"
-      defaultValue={defaultValue}
-      name={name}
-    />
+    <>
+      <Box>
+        <InputLabel htmlFor={name}>{label}</InputLabel>
+
+        <Input
+          fullWidth
+          type={type}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          name={name}
+          id={name}
+        />
+      </Box>
+    </>
   );
 }

@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ScTextField from "./scTextField";
+import ScTextArea from "./scTextArea";
 
 type ProductFormProps = {
   product?: Product | null;
@@ -51,19 +52,48 @@ export default function ProductForm({ product }: ProductFormProps) {
       <Typography variant="h5" sx={{ mb: "1em" }}>
         {product ? "Edit" : "Create New"}
       </Typography>
-
-      <ScTextField
-        label="Product Name"
-        type="text"
-        defaultValue={product?.name as string}
-        name="asdasd"
-      />
-      <ScTextField
-        label="Brand"
-        type="text"
-        defaultValue={product?.brand as string}
-        name="brand"
-      />
+      <Grid container spacing={4}>
+        <Grid item xs={6}>
+          <ScTextField
+            label="Product Name"
+            type="text"
+            defaultValue={product?.name}
+            name="asdasd"
+            placeholder="Your Product name"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ScTextField
+            label="Brand"
+            type="text"
+            defaultValue={product?.brand}
+            name="brand"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <ScTextArea
+            label="Product Decription"
+            defaultValue={product?.description}
+            name="description"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ScTextField
+            label="Price"
+            type="number"
+            defaultValue={product?.price}
+            name="price"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ScTextField
+            label="Max Quantity"
+            type="number"
+            defaultValue={product?.maxQuantity}
+            name="maxQuantity"
+          />
+        </Grid>
+      </Grid>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}

@@ -15,6 +15,7 @@ export default function ScImage(props: any) {
         className="position-relative"
         fill
         style={{ objectPosition: "top center", objectFit: "cover" }}
+        placeholder="empty"
       />
     </div>
   );
