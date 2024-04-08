@@ -12,11 +12,12 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import ScTextField from "./scTextField";
 import ScTextArea from "./scTextArea";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import ScSelect from "./scSelect";
 
 type ProductFormProps = {
   product?: Product | null;
@@ -25,17 +26,39 @@ type ProductFormProps = {
 const vSchema = yup.object().shape({
   name: yup.string().required("Product Name is required"),
   brand: yup.string().required("Product Brand is required"),
+  description: yup.string().required("Product Description is required"),
+  price: yup.number().moreThan(0),
+  maxQuantity: yup.number().moreThan(0),
 });
+
+const getInitValues = () => {
+  return {
+    name: "",
+    brand: "No brand",
+    description: "",
+    price: 0,
+    maxQuantity: 0,
+  };
+};
 
 export default function ProductForm({ product }: ProductFormProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
+  let initialValues: any = getInitValues();
+  if (product?.id) {
+    initialValues = product;
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm({ resolver: yupResolver(vSchema) });
+    reset,
+    control,
+  } = useForm({
+    resolver: yupResolver(vSchema),
+    values: initialValues,
+  });
 
   const onFormSubmit = useCallback(
     (form: any) => {
@@ -47,13 +70,6 @@ export default function ProductForm({ product }: ProductFormProps) {
     },
     [product]
   );
-  let initialValues: any = {
-    organization_name: "",
-    website_url: "",
-  };
-  if (product?.id) {
-    initialValues = product;
-  }
   useEffect(() => {
     clearErrors();
   }, [clearErrors, product]);
@@ -76,46 +92,56 @@ export default function ProductForm({ product }: ProductFormProps) {
         <Grid container spacing={4}>
           <Grid item xs={6}>
             <ScTextField
-              label="Product Name"
               type="text"
-              defaultValue={product?.name}
-              {...register("name")}
+              label="Product Name"
+              register={register("name")}
             />
           </Grid>
           <Grid item xs={6}>
-            <ScTextField
-              label="Brand"
-              type="text"
-              defaultValue={product?.brand}
-              {...register("brand")}
+            <Controller
+              name="brand"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScSelect
+                  name={name}
+                  label="Brand"
+                  menuItems={[
+                    "Safina Lawn Printed Collection Vol 11",
+                    "Safina Lawn Printed Collection Vol 10",
+                    "No brand",
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
             <ScTextArea
               label="Product Decription"
-              defaultValue={product?.description}
-              {...register("description")}
+              register={register("description")}
             />
           </Grid>
           <Grid item xs={6}>
             <ScTextField
               label="Price"
               type="number"
-              defaultValue={product?.price}
-              {...register("price")}
+              register={register("price")}
             />
           </Grid>
           <Grid item xs={6}>
             <ScTextField
               label="Max Quantity"
               type="number"
-              defaultValue={product?.maxQuantity}
-              {...register("maxQuantity")}
+              register={register("maxQuantity")}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
             <Button variant="contained" type="submit">
               {product ? "Update" : "Add"}
+            </Button>
+            <Button variant="outlined" onClick={() => reset()}>
+              Reset
             </Button>
           </Grid>
         </Grid>

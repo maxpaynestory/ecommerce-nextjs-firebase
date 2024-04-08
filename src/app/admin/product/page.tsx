@@ -24,6 +24,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
 import ProductForm from "../ui/productForm";
+import ScImage from "../../components/common/scImage";
 
 const columnHelper = createColumnHelper<ProductEntity>();
 
@@ -63,6 +64,21 @@ export default function Product() {
 
   const columns = useMemo(
     () => [
+      columnHelper.display({
+        id: "image",
+        cell: (info) => {
+          const product = info.row.original;
+
+          return (
+            <ScImage
+              src={product.image}
+              alt={`${product.name} image`}
+              width={50}
+              height={50}
+            />
+          );
+        },
+      }),
       columnHelper.accessor("id", {
         cell: (info) => info.getValue(),
         header: "ID",
@@ -75,9 +91,21 @@ export default function Product() {
         footer: (info) => info.column.id,
         enableColumnFilter: false,
       }),
+      columnHelper.accessor("brand", {
+        cell: (info) => info.getValue(),
+        header: "Brand",
+        footer: (info) => info.column.id,
+        enableColumnFilter: false,
+      }),
       columnHelper.accessor("price", {
         cell: (info) => displayMoneyInPKR(info.getValue()),
         header: "Price",
+        footer: (info) => info.column.id,
+        enableColumnFilter: false,
+      }),
+      columnHelper.accessor("quantity", {
+        cell: (info) => info.getValue(),
+        header: "Qty",
         footer: (info) => info.column.id,
         enableColumnFilter: false,
       }),
@@ -124,6 +152,11 @@ export default function Product() {
         </Grid>
         <Grid item xs={12}>
           <ProductForm product={formOrg} />
+        </Grid>
+        <Grid item xs={12}>
+          <h3>
+            Products ({data.length} / {data.length})
+          </h3>
         </Grid>
         <Grid item xs={12}>
           <ScTable columns={columns} data={data} />

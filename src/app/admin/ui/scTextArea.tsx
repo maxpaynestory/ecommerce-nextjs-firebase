@@ -5,27 +5,16 @@ import { Box, InputLabel } from "@mui/material";
 
 type ScTextAreaProps = {
   label: string;
-  defaultValue: any;
-  name: string;
   placeholder?: string;
   error?: boolean;
+  register: any;
 };
 
-export default function ScTextArea({
-  label,
-  name,
-  defaultValue,
-}: ScTextAreaProps) {
+export default function ScTextArea({ label, register }: ScTextAreaProps) {
   return (
     <Box>
-      <InputLabel htmlFor={name}>{label}</InputLabel>
-      <TextareaAutosize
-        aria-label={label}
-        defaultValue={defaultValue}
-        name={name}
-        id={name}
-        minRows={3}
-      />
+      <InputLabel htmlFor={register.name}>{label}</InputLabel>
+      <TextareaAutosize aria-label={label} {...register} minRows={3} />
     </Box>
   );
 }
