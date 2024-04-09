@@ -19,6 +19,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ScSelect from "./scSelect";
 import ScKeywords from "./scKeywords";
+import { MuiColorInput } from "mui-color-input";
+import ScColorInput from "./scColorInput";
 
 type ProductFormProps = {
   product?: Product | null;
@@ -30,7 +32,9 @@ const vSchema = yup.object().shape({
   description: yup.string().required("Product Description is required"),
   price: yup.number().moreThan(0),
   maxQuantity: yup.number().moreThan(0),
-  keywords: yup.array().length(1),
+  keywords: yup.array().min(1),
+  sizes: yup.array().length(1),
+  availableColors: yup.array().length(1),
 });
 
 const getInitValues = () => {
@@ -41,6 +45,8 @@ const getInitValues = () => {
     price: 0,
     maxQuantity: 0,
     keywords: [],
+    sizes: [],
+    availableColors: ["#000000"],
   };
 };
 
@@ -149,6 +155,34 @@ export default function ProductForm({ product }: ProductFormProps) {
                   name={name}
                   value={value}
                   onChange={onChange}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controller
+              name="sizes"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScKeywords
+                  label="Sizes"
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controller
+              name="availableColors"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScColorInput
+                  onChange={onChange}
+                  value={value[0]}
+                  name={name}
+                  label="Color"
                 />
               )}
             />
