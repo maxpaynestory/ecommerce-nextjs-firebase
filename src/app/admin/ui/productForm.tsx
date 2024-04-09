@@ -18,6 +18,7 @@ import ScTextArea from "./scTextArea";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ScSelect from "./scSelect";
+import ScKeywords from "./scKeywords";
 
 type ProductFormProps = {
   product?: Product | null;
@@ -29,6 +30,7 @@ const vSchema = yup.object().shape({
   description: yup.string().required("Product Description is required"),
   price: yup.number().moreThan(0),
   maxQuantity: yup.number().moreThan(0),
+  keywords: yup.array().length(1),
 });
 
 const getInitValues = () => {
@@ -38,6 +40,7 @@ const getInitValues = () => {
     description: "",
     price: 0,
     maxQuantity: 0,
+    keywords: [],
   };
 };
 
@@ -134,6 +137,20 @@ export default function ProductForm({ product }: ProductFormProps) {
               label="Max Quantity"
               type="number"
               register={register("maxQuantity")}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Controller
+              name="keywords"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScKeywords
+                  label="Keywords"
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
