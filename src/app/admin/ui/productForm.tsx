@@ -53,6 +53,7 @@ const getInitValues = () => {
 
 export default function ProductForm({ product }: ProductFormProps) {
   const [loading, setLoading] = useState(false);
+  const [resetUploads, setResetUploads] = useState(false);
   const dispatch = useAppDispatch();
   let initialValues: any = getInitValues();
 
@@ -69,11 +70,11 @@ export default function ProductForm({ product }: ProductFormProps) {
   } = useForm({
     resolver: yupResolver(vSchema),
     values: initialValues,
-    defaultValues: getInitValues(),
   });
 
   const MyResetForm = useCallback(() => {
     reset();
+    setResetUploads((val) => !val);
   }, [reset]);
 
   const onFormSubmit = useCallback(
@@ -202,6 +203,7 @@ export default function ProductForm({ product }: ProductFormProps) {
                   name={name}
                   label="Thumbnail"
                   accept="image/png, image/gif, image/jpeg"
+                  resetUploads={resetUploads}
                 />
               )}
             />
@@ -217,6 +219,7 @@ export default function ProductForm({ product }: ProductFormProps) {
                   name={name}
                   label="Image Collection"
                   accept="image/png, image/gif, image/jpeg"
+                  resetUploads={resetUploads}
                 />
               )}
             />

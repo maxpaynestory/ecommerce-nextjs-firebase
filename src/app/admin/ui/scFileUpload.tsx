@@ -9,6 +9,7 @@ type ScFileUploadProps = {
   multiple: boolean;
   onChange: (val: any) => void;
   accept: string;
+  resetUploads: boolean;
 };
 export default function ScFileUpload({
   label,
@@ -16,6 +17,7 @@ export default function ScFileUpload({
   onChange,
   name,
   accept,
+  resetUploads,
 }: ScFileUploadProps) {
   const [imageFiles, setImageFiles] = useState<any[]>([]);
   const onFileChange = useCallback((event: any) => {
@@ -42,6 +44,10 @@ export default function ScFileUpload({
       });
     }
   }, []);
+
+  useEffect(() => {
+    setImageFiles([]);
+  }, [resetUploads]);
   return (
     <Box>
       {imageFiles.length > 0 && (
