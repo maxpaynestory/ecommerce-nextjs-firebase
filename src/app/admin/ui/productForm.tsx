@@ -9,8 +9,6 @@ import {
   Button,
   Backdrop,
   CircularProgress,
-  FormControl,
-  TextField,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import ScTextField from "./scTextField";
@@ -19,8 +17,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ScSelect from "./scSelect";
 import ScKeywords from "./scKeywords";
-import { MuiColorInput } from "mui-color-input";
 import ScColorInput from "./scColorInput";
+import ScFileUpload from "./scFileUpload";
+import { v4 as uuidv4 } from "uuid";
 
 type ProductFormProps = {
   product?: Product | null;
@@ -47,6 +46,8 @@ const getInitValues = () => {
     keywords: [],
     sizes: [],
     availableColors: ["#000000"],
+    imageCollection: [],
+    image: "",
   };
 };
 
@@ -54,20 +55,26 @@ export default function ProductForm({ product }: ProductFormProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   let initialValues: any = getInitValues();
+
   if (product?.id) {
     initialValues = product;
   }
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    clearErrors,
     reset,
     control,
   } = useForm({
     resolver: yupResolver(vSchema),
     values: initialValues,
+    defaultValues: getInitValues(),
   });
+
+  const MyResetForm = useCallback(() => {
+    reset();
+  }, [reset]);
 
   const onFormSubmit = useCallback(
     (form: any) => {
@@ -79,11 +86,8 @@ export default function ProductForm({ product }: ProductFormProps) {
     },
     [product]
   );
-  useEffect(() => {
-    clearErrors();
-  }, [clearErrors, product]);
   return (
-    <Paper elevation={3} sx={{ padding: "2rem" }}>
+    <Paper elevation={3} sx={{ padding: "2rem" }} key={product?.id || uuidv4()}>
       <Typography variant="h5" sx={{ mb: "1em" }}>
         {product ? "Edit" : "Create New"}
       </Typography>
@@ -187,11 +191,41 @@ export default function ProductForm({ product }: ProductFormProps) {
               )}
             />
           </Grid>
+          <Grid item xs={6}>
+            <Controller
+              name="image"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScFileUpload
+                  onChange={onChange}
+                  multiple={false}
+                  name={name}
+                  label="Thumbnail"
+                  accept="image/png, image/gif, image/jpeg"
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="imageCollection"
+              control={control}
+              render={({ field: { onChange, value, name } }) => (
+                <ScFileUpload
+                  onChange={onChange}
+                  multiple={true}
+                  name={name}
+                  label="Image Collection"
+                  accept="image/png, image/gif, image/jpeg"
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={12} sm={12}>
             <Button variant="contained" type="submit">
               {product ? "Update" : "Add"}
             </Button>
-            <Button variant="outlined" onClick={() => reset()}>
+            <Button variant="outlined" onClick={MyResetForm}>
               Reset
             </Button>
           </Grid>
